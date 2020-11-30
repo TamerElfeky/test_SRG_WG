@@ -1,0 +1,32 @@
+version: "3.7"
+services:
+  nginx:
+    build:
+      context: nginx
+      dockerfile: Dockerfile
+    ports:
+     - 8080:80
+    networks:
+     - private
+  db:
+    image: percona:8-centos
+    environment:
+    -  MYSQL_ALLOW_EMPTY_PASSWORD="true"
+    volumes:
+    - db-data:/var/lib/mysql
+  app1:
+    build:
+      context: app1
+      dockerfile: dockerfile-app1
+    networks:
+     - private
+  app2:
+    build:
+      context: app2
+      dockerfile: dockerfile-app2
+    networks:
+     - private
+networks:
+  private:
+volumes:
+  db-data:
